@@ -4,15 +4,15 @@ const { scrects } = require("../../config");
 class OperasCtl {
   async create(req, res) {
     const opera = new Operas({
-        title: req.body.title,
-        actors: req.body.actors,
-        country: req.body.country,
-        type: req.body.type,
-        single: req.body.single,
-        first_date: req.body.first_date
-    })
+      title: req.body.title,
+      actors: req.body.actors,
+      country: req.body.country,
+      type: req.body.type,
+      single: req.body.single,
+      first_date: req.body.first_date,
+    });
     const result = await opera.save();
-    console.log(result)
+    console.log(result);
     res.status(201).json({ result });
   }
   async findAll(req, res) {
@@ -55,6 +55,10 @@ class OperasCtl {
     console.log(params, params2);
     const data = await Operas.find({ $or: params2 });
     res.status(201).json({ data });
+  }
+  async delete(req, res) {
+    const result = await Operas.findByIdAndRemove(req.params.id);
+    res.status(201).json({ data: result });
   }
 }
 

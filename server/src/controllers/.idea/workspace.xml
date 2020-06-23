@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c94ce7e2-ea0e-4619-a8a8-f0233d14170c" name="默认更改列表" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../client/src/page/operas/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../../client/src/page/operas/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../server.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/operas.js" beforeDir="false" afterPath="$PROJECT_DIR$/operas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../routes/operas.js" beforeDir="false" afterPath="$PROJECT_DIR$/../routes/operas.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../routes/user-routers.js" beforeDir="false" afterPath="$PROJECT_DIR$/../routes/user-routers.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectId" id="1difS7FcOAWSeJ8NKvvr4Tv70Xb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c94ce7e2-ea0e-4619-a8a8-f0233d14170c" name="默认更改列表" comment="" />
+      <created>1592912831705</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1592912831705</updated>
+      <workItem from="1592912833873" duration="11000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

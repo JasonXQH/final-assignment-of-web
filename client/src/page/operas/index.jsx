@@ -1,11 +1,23 @@
 import React from "react";
-import { Table, Input, Button, Select, Pagination, Form, message } from "antd";
+import {
+  Table,
+  Input,
+  Button,
+  Select,
+  Pagination,
+  Form,
+  message,
+  Icon,
+  Tooltip,
+  Modal,
+} from "antd";
 import Layout from "../components/layout";
 import "./style.scss";
 import Api from "../../js/Api";
 import Util from "../../js/Util";
 import { connect } from "react-redux";
 import { createHashHistory } from "history";
+const { confirm } = Modal;
 const history = createHashHistory();
 const { Option } = Select;
 
@@ -128,6 +140,37 @@ class Operas extends React.Component {
   createForm() {
     history.push("/operas/create");
   }
+  deleteOperas = (item) => {
+    const _this = this;
+    confirm({
+      title: "Are you sure delete?",
+      content: "Hope you know what you are doing！",
+      okText: "confirm",
+      okType: "danger",
+      cancelText: "cancel",
+      onOk() {
+        const token = Util.getToken();
+        Api.post( `/operas/${item._id}/delete`,{
+          headers: { Authorization: `Bearer ${token}` },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.data) {
+              message.success("delete success");
+              _this.getUserList();
+            } else {
+              message.error("fail");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const { list, total, current, label, type } = this.state;
@@ -286,6 +329,26 @@ class Operas extends React.Component {
                   dataIndex: "first_date",
                   key: "first_date",
                   align: "center",
+                },
+                {
+                  title: "delete",
+                  key: "delete",
+                  align: "center",
+                  render: (row, item) => (
+                    <div className="person-table-btn">
+                      {
+                        <Tooltip placement="top" title={"delete"}>
+                          <Icon
+                            type="delete"
+                            theme="twoTone"
+                            twoToneColor="#eb2f96"
+                            className="table-btn-item"
+                            onClick={() => this.deleteOperas(item)}
+                          />
+                        </Tooltip>
+                      }
+                    </div>
+                  ),
                 },
               ]}
             />

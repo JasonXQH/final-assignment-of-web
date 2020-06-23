@@ -43,6 +43,7 @@ server.use(helmet());
 
 const logger = require("morgan");
 const Log = require('./../server/src/models/log')
+const logDAO = require('./../server/src/models/logDAO')
 var writeToDB = {
   write: function (line) {
     var ele = new Log({
@@ -63,7 +64,17 @@ server.use(logger("dev"));
 // var accessLog = fs.createWriteStream("./access.csv", { flags: "a" });
 // server.use(logger("combined", { stream: accessLog }));
  
-
+let method = '';
+server.use(logger(function (tokens, req, res) {
+  var request_time = new Date();
+  var request_method = tokens.method(req, res);
+  var request_url = tokens.url(req, res);
+  var status = tokens.status(req, res);
+  var remote_addr = tokens['remote-addr'](req, res);
+  logDAO.userlog([request_time,request_method,request_url,status,remote_addr], function (success) {
+    console.log('成功保存！');
+  })
+}))
 /*
  * Database object modelling
  * https://www.npmjs.com/package/mongoose
