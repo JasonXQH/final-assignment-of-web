@@ -1,7 +1,20 @@
-const jsonwebtoken = require('jsonwebtoken');
-const Operas = require('../models/operas');
-const { scrects } = require('../../config');
+const jsonwebtoken = require("jsonwebtoken");
+const Operas = require("../models/operas");
+const { scrects } = require("../../config");
 class OperasCtl {
+  async create(req, res) {
+    const opera = new Operas({
+        title: req.body.title,
+        actors: req.body.actors,
+        country: req.body.country,
+        type: req.body.type,
+        single: req.body.single,
+        first_date: req.body.first_date
+    })
+    const result = await opera.save();
+    console.log(result)
+    res.status(201).json({ result });
+  }
   async findAll(req, res) {
     const { per_page = 10 } = req.query;
     const page = Math.max(req.query.page * 1, 1) - 1;
@@ -15,7 +28,7 @@ class OperasCtl {
   async insertMany(req, res) {
     const { data } = req.body;
     await Operas.insertMany(data);
-    res.status(201).json({ data: 'success' });
+    res.status(201).json({ data: "success" });
   }
   async getListByKey(req, res) {
     const params = {};

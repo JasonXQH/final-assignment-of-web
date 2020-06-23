@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Taobao = require("../models/taobao");
 const { Schema, model } = mongoose;
 
 const taobaocoffeeSchema = new Schema(
