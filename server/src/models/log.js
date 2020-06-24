@@ -2,15 +2,7 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 let Log = new Schema({
-  method: {
-    type: String,
-    default: "",
-  },
-  url: {
-    type: String,
-    default: "",
-  },
-  status: {
+  line: {
     type: String,
     default: "",
   },

@@ -1,5 +1,6 @@
 const jsonwebtoken = require("jsonwebtoken");
 const Operas = require("../models/operas");
+const OperaCollection = require("../models/operaCollections");
 const { scrects } = require("../../config");
 class OperasCtl {
   async create(req, res) {
@@ -15,12 +16,41 @@ class OperasCtl {
     console.log(result);
     res.status(201).json({ result });
   }
+  async addToCollection(req, res) {
+    const { body } = req.body;
+    const { item } = body;
+    const opera = new OperaCollection({
+      title: item.title,
+      actors: item.actors,
+      country: item.country,
+      first_date: item.first_date,
+      now: item.now,
+      other_name: item.other_name,
+      single: item.single,
+      station: item.station,
+      type: item.type,
+      url: item.url,
+    });
+    const result = await opera.save();
+    console.log(result);
+    res.status(201).json({ result });
+  }
   async findAll(req, res) {
     const { per_page = 10 } = req.query;
     const page = Math.max(req.query.page * 1, 1) - 1;
     const perPage = Math.max(per_page * 1, 1);
     const total = await Operas.countDocuments();
     const data = await Operas.find()
+      .limit(perPage)
+      .skip(page * perPage);
+    res.status(201).json({ data, total });
+  }
+  async collectionfindAll(req, res) {
+    const { per_page = 10 } = req.query;
+    const page = Math.max(req.query.page * 1, 1) - 1;
+    const perPage = Math.max(per_page * 1, 1);
+    const total = await OperaCollection.countDocuments();
+    const data = await OperaCollection.find()
       .limit(perPage)
       .skip(page * perPage);
     res.status(201).json({ data, total });
@@ -58,6 +88,10 @@ class OperasCtl {
   }
   async delete(req, res) {
     const result = await Operas.findByIdAndRemove(req.params.id);
+    res.status(201).json({ data: result });
+  }
+  async deletefromCollection(req, res) {
+    const result = await OperaCollection.findByIdAndRemove(req.params.id);
     res.status(201).json({ data: result });
   }
 }

@@ -150,13 +150,45 @@ class Operas extends React.Component {
       cancelText: "cancel",
       onOk() {
         const token = Util.getToken();
-        Api.post( `/operas/${item._id}/delete`,{
+        Api.post(`/operas/${item._id}/delete`, {
           headers: { Authorization: `Bearer ${token}` },
         })
           .then((res) => {
             console.log(res);
             if (res.data) {
               message.success("delete success");
+              _this.initTableData();
+            } else {
+              message.error("fail");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+  addToCollection = (item) => {
+    const _this = this;
+    confirm({
+      title: "Do you Like this?",
+      content: "Add to your collections~",
+      okText: "confirm",
+      okType: "primary",
+      cancelText: "cancel",
+      onOk() {
+        const token = Util.getToken();
+        Api.post(`/operas/${item._id}/addToCollection`, {
+          headers: { Authorization: `Bearer ${token}` },
+          body: { item },
+        })
+          .then((res) => {
+            console.log(res);
+            if (res.data) {
+              message.success("Add success");
               _this.getUserList();
             } else {
               message.error("fail");
@@ -171,9 +203,14 @@ class Operas extends React.Component {
       },
     });
   };
+  handleCollection() {
+    history.push("/operas/collection");
+  }
   render() {
+    const { userData } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { list, total, current, label, type } = this.state;
+    const { name, isLogin } = userData;
 
     return (
       <div>
@@ -281,6 +318,16 @@ class Operas extends React.Component {
             >
               新建
             </Button>
+            {name === "admin" ? (
+              <Button
+                size="default"
+                type="primary"
+                onClick={() => this.handleCollection()}
+                style={{ marginLeft: "10px" }}
+              >
+                我的收藏
+              </Button>
+            ) : null}
           </div>
 
           <div>
@@ -296,6 +343,7 @@ class Operas extends React.Component {
                   dataIndex: "title",
                   key: "title",
                   align: "center",
+                  width: 150,
                 },
                 {
                   title: "演员",
@@ -309,34 +357,37 @@ class Operas extends React.Component {
                   dataIndex: "country",
                   key: "country",
                   align: "center",
-                  width: 100,
+                  width: 70,
                 },
                 {
                   title: "类型",
                   dataIndex: "type",
                   key: "type",
                   align: "center",
-                  width: 200,
+                  width: 150,
                 },
                 {
                   title: "信息",
                   dataIndex: "single",
                   key: "single",
                   align: "center",
+                  width: 150,
                 },
                 {
                   title: "首播时间",
                   dataIndex: "first_date",
                   key: "first_date",
                   align: "center",
+                  width: 150,
                 },
                 {
                   title: "delete",
                   key: "delete",
                   align: "center",
+                  width: 100,
                   render: (row, item) => (
                     <div className="person-table-btn">
-                      {
+                      {name === "admin" ? (
                         <Tooltip placement="top" title={"delete"}>
                           <Icon
                             type="delete"
@@ -346,7 +397,33 @@ class Operas extends React.Component {
                             onClick={() => this.deleteOperas(item)}
                           />
                         </Tooltip>
-                      }
+                      ) : (
+                        "无权限"
+                      )}
+                    </div>
+                  ),
+                },
+                {
+                  title: "Like",
+                  key: "Like",
+                  align: "center",
+                  width: 100,
+                  render: (row, item) => (
+                    <div className="person-table-btn">
+                      {name === "admin" ? (
+                        <Tooltip placement="top" title={"like"}>
+                          <Icon
+                            type="like"
+                            theme="twoTone"
+                            className="table-btn-item"
+                            onClick={() => {
+                              this.addToCollection(item);
+                            }}
+                          />
+                        </Tooltip>
+                      ) : (
+                        "无权限"
+                      )}
                     </div>
                   ),
                 },

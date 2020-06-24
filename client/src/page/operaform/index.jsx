@@ -38,7 +38,7 @@ class MovieForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { userData } = this.props;
-    const { isLogin } = userData;
+    const { name, isLogin } = userData;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
