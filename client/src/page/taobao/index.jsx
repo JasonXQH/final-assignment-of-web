@@ -16,6 +16,11 @@ class TaoBao extends React.Component {
       list: [],
       current: 1,
       total: 10,
+      value1: null,
+      value2: null,
+      label1: null,
+      label2: null,
+      boolType: null,
       label: [
         {
           label: "商品名称",
@@ -69,20 +74,50 @@ class TaoBao extends React.Component {
 
   onChange = (page) => {
     const token = Util.getToken();
-    Api.get(`/taobao/list?page=${page}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    }).then((res) => {
-      if (res.data) {
-        this.setState({
-          list: res.data.data,
-          total: res.data.total,
-          current: page,
+    const { sort, label1, value1, boolType: type, label2, value2 } = this.state;
+    const keyWords = `${label1}=${value1}&${label2}=${value2}`;
+    if (type) {
+      if (type === "OR") {
+        Api.get(`/taobao/getListOr?${keyWords}&page=${page}&sort=${sort}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((res) => {
+          if (res.data) {
+            this.setState({
+              list: res.data.data,
+              total: res.data.total,
+              current: page,
+            });
+          }
+        });
+      } else {
+        Api.get(`/taobao/getList?${keyWords}&page=${page}&sort=${sort} `, {
+          headers: { Authorization: `Bearer ${token}` },
+        }).then((res) => {
+          if (res.data) {
+            this.setState({
+              list: res.data.data,
+              total: res.data.total,
+              current: page,
+            });
+          }
         });
       }
-    });
+    } else {
+      Api.get(`/taobao/list?page=${page} `, {
+        headers: { Authorization: `Bearer ${token}` },
+      }).then((res) => {
+        if (res.data) {
+          this.setState({
+            list: res.data.data,
+            total: res.data.total,
+            current: page,
+          });
+        }
+      });
+    }
   };
   handleSubmit = (e) => {
-    const { sort } = this.state;
+    const { sort, current } = this.state;
     const token = Util.getToken();
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -91,28 +126,42 @@ class TaoBao extends React.Component {
         if (label1 === label2) {
           message.error("两个查询字段不可重复！");
         } else {
+          this.setState({
+            label1,
+            value1,
+            label2,
+            value2,
+            boolType: type,
+            current: 1,
+          });
           const keyWords = `${label1}=${value1}&${label2}=${value2}`;
           if (type === "AND") {
-            Api.get(`/taobao/getList?${keyWords}&sort=${sort}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }).then((res) => {
+            Api.get(
+              `/taobao/getList?${keyWords}&page=${current}&sort=${sort} `,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            ).then((res) => {
               if (res.data) {
                 this.setState({
                   list: res.data.data,
                   total: res.data.total,
-                  current: 0,
+                  current: 1,
                 });
               }
             });
           } else {
-            Api.get(`/taobao/getListOr?${keyWords}&sort=${sort}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            }).then((res) => {
+            Api.get(
+              `/taobao/getListOr?${keyWords}?page=${current}&sort=${sort}`,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              }
+            ).then((res) => {
               if (res.data) {
                 this.setState({
                   list: res.data.data,
                   total: res.data.total,
-                  current: 0,
+                  current: 1,
                 });
               }
             });

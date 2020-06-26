@@ -29,20 +29,36 @@ class TaobaoCtl {
   }
   async getListByKey(req, res) {
     const params = {};
-    Object.keys(req.query).forEach((item) => {
-      params[item] = { $regex: eval(`/${req.query[item]}/ig`) };
-    });
+    const { per_page = 10 } = req.query;
+    const page = Math.max(req.query.page * 1, 1) - 1;
+    const perPage = Math.max(per_page * 1, 1);
+    const keys = Object.keys(req.query);
+    for (let i = 0; i < 2; i++) {
+      params[keys[i]] = { $regex: eval(`/${req.query[keys[i]]}/ig`) };
+    }
+
     console.log(params);
     const sort = req.query.sort;
-    console.log(sort);
-    const data = await Taobao.find(params).sort({
+
+    const totaldata = await Taobao.find(params).sort({
       price: sort === "reverse" ? 1 : -1,
     });
-    res.status(201).json({ data });
+    const data = await Taobao.find(params).sort({
+      price: sort === "reverse" ? 1 : -1,
+    })
+    .limit(perPage)
+    .skip(page * perPage);
+    const total = Object.getOwnPropertyNames(totaldata).length;
+    console.log(total);
+    res.status(201).json({ data, total });
   }
+
   async getListByOr(req, res) {
     const params = {};
-    
+    const { per_page = 10 } = req.query;
+
+    const page = Math.max(req.query.page * 1, 1) - 1;
+    const perPage = Math.max(per_page * 1, 1);
     Object.keys(req.query).forEach((item) => {
       params[item] = { $regex: eval(`/${req.query[item]}/ig`) };
     });
@@ -55,13 +71,17 @@ class TaobaoCtl {
     });
     console.log(params, params2);
     const sort = req.query.sort;
-    console.log(sort);
-    const data = await Taobao
-    .find({ $or: params2 })
-    .sort({
+    const totaldata = await Taobao.find({ $or: params2 }).sort({
       price: sort === "reverse" ? 1 : -1,
     });
-    res.status(201).json({ data });
+    const data = await Taobao.find({ $or: params2 })
+      .sort({
+        price: sort === "reverse" ? 1 : -1,
+      })
+      .limit(perPage)
+      .skip(page * perPage);
+    const total = Object.getOwnPropertyNames(totaldata).length;
+    res.status(201).json({ data, total });
   }
 }
 

@@ -19,7 +19,6 @@ import { connect } from "react-redux";
 import { createHashHistory } from "history";
 const { confirm } = Modal;
 const history = createHashHistory();
-const { Option } = Select;
 
 class OperaCollection extends React.Component {
   constructor(props) {

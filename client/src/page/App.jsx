@@ -14,6 +14,7 @@ const Maoyan = lazy(() => import("./maoyan"));
 const Operas = lazy(() => import("./operas"));
 const OperaForm = lazy(() => import("./operaform"));
 const OperaCollection = lazy(() => import("./operaCollection"));
+const OperaDetails = lazy(() => import("./operadetails"));
 class App extends React.Component {
   render() {
     return (
@@ -39,6 +40,11 @@ class App extends React.Component {
               exact
               path="/operas/collection"
               component={OperaCollection}
+            />
+             <PrivateRoute
+              exact
+              path="/operas/:id/details"
+              component={OperaDetails}
             />
           </Switch>
         </Suspense>
