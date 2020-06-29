@@ -1,9 +1,7 @@
 import React from "react";
 import {
   Table,
-  Input,
   Button,
-  Select,
   Pagination,
   Form,
   message,
@@ -126,13 +124,13 @@ class OperaCollection extends React.Component {
         <Layout>
           <h1 className="title">我的收藏</h1>
           <Button
-              size="default"
-              type="danger"
-              onClick={() => this.goBack()}
-              style={{ marginLeft: "10px" }}
-            >
-              返回
-            </Button>
+            size="default"
+            type="danger"
+            onClick={() => this.goBack()}
+            style={{ marginLeft: "10px" }}
+          >
+            返回
+          </Button>
           <div>
             <div style={{ display: "flex" }}></div>
             <Table
@@ -147,6 +145,9 @@ class OperaCollection extends React.Component {
                   key: "title",
                   align: "center",
                   width: 150,
+                  render: (text) => (
+                    <a href={`/#/operas/${text}/details`}>{text}</a>
+                  ),
                 },
                 {
                   title: "演员",
